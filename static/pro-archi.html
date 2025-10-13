@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8">
+    <link rel="profile" href="https://gmpg.org/xfn/11">
+    <link rel="pingback" href="https://wp.magnium-themes.com/thebuilt/thebuilt-2/xmlrpc.php">
+    <title>Architecture and Design-AGA</title>
+    <link rel="alternate" type="application/rss+xml" title="AGA � Feed" href="https://wp.magnium-themes.com/thebuilt/thebuilt-2/feed/">
+    <link rel="alternate" type="application/rss+xml" title="AGA � Comments Feed" href="https://wp.magnium-themes.com/thebuilt/thebuilt-2/comments/feed/">
+    <script type="text/javascript">
+        window._wpemojiSettings = {
+            "baseUrl": "https:\/\/s.w.org\/images\/core\/emoji\/72x72\/",
+            "ext": ".png",
+            "source": {
+                "concatemoji": "http:\/\/wp.magnium-themes.com\/thebuilt\/thebuilt-2\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.5.3"
+            }
+        };
+        ! function(a, b, c) {
+            function d(a) {
+                var c, d, e, f = b.createElement("canvas"),
+                    g = f.getContext && f.getContext("2d"),
+                    h = String.fromCharCode;
+                if (!g || !g.fillText) return !1;
+                switch (g.textBaseline = "top", g.font = "600 32px Arial", a) {
+                    case "flag":
+                        return g.fillText(h(55356, 56806, 55356, 56826), 0, 0), f.toDataURL().length > 3e3;
+                    case "diversity":
+                        return g.fillText(h(55356, 57221), 0, 0), c = g.getImageData(16, 16, 1, 1).data, d = c[0] + "," + c[1] + "," + c[2] + "," + c[3], g.fillText(h(55356, 57221, 55356, 57343), 0, 0), c = g.getImageData(16, 16, 1, 1).data, e = c[0] + "," + c[1] + "," + c[2] + "," + c[3], d !== e;
+                    case "simple":
+                        return g.fillText(h(55357, 56835), 0, 0), 0 !== g.getImageData(16, 16, 1, 1).data[0];
+                    case "unicode8":
+                        return g.fillText(h(55356, 57135), 0, 0), 0 !== g.getImageData(16, 16, 1, 1).data[0]
+                }
+                return !1
+            }
+
+            function e(a) {
+                var c = b.createElement("script");
+                c.src = a, c.type = "text/javascript", b.getElementsByTagName("head")[0].appendChild(c)
+            }
+            var f, g, h, i;
+            for (i = Array("simple", "flag", "unicode8", "diversity"), c.supports = {
+                    everything: !0,
+                    everythingExceptFlag: !0
+                }, h = 0; h < i.length; h++) c.supports[i[h]] = d(i[h]), c.supports.everything = c.supports.everything && c.supports[i[h]], "flag" !== i[h] && (c.supports.everythingExceptFlag = c.supports.everythingExceptFlag && c.supports[i[h]]);
+            c.supports.everythingExceptFlag = c.supports.everythingExceptFlag && !c.supports.flag, c.DOMReady = !1, c.readyCallback = function() {
+                c.DOMReady = !0
+            }, c.supports.everything || (g = function() {
+                c.readyCallback()
+            }, b.addEventListener ? (b.addEventListener("DOMContentLoaded", g, !1), a.addEventListener("load", g, !1)) : (a.attachEvent("onload", g), b.attachEvent("onreadystatechange", function() {
+                "complete" === b.readyState && c.readyCallback()
+            })), f = c.source || {}, f.concatemoji ? e(f.concatemoji) : f.wpemoji && f.twemoji && (e(f.twemoji), e(f.wpemoji)))
+        }(window, document, window._wpemojiSettings);
+    </script>
+    <style type="text/css">
+        img.wp-smiley,
+        img.emoji {
+            display: inline !important;
+            border: none !important;
+            box-shadow: none !important;
+            height: 1em !important;
+            width: 1em !important;
+            margin: 0 .07em !important;
+            vertical-align: -0.1em !important;
+            background: none !important;
+            padding: 0 !important;
+        }
+    </style>
+    <link rel="stylesheet" id="dedalx_ts-css" href="../styles/dedalx_ts.css" type="text/css" media="all">
+    <link rel="stylesheet" id="dedalx_cp_ts-css" href="../styles/colorpicker.css" type="text/css" media="all">
+    <link rel="stylesheet" id="contact-form-7-css" href="../styles/styles.css" type="text/css" media="all">
+    <link rel="stylesheet" id="responsive-lightbox-tosrus-css" href="../styles/jquery.tosrus.all.css" type="text/css" media="all">
+    <link rel="stylesheet" id="rs-plugin-settings-css" href="../styles/settings.css" type="text/css" media="all">
+    <style id="rs-plugin-settings-inline-css" type="text/css">
+        #rs-demo-id {}
+    </style>
+    <link rel="stylesheet" id="woocommerce-layout-css" href="../styles/woocommerce-layout.css" type="text/css" media="all">
+    <link rel="stylesheet" id="woocommerce-smallscreen-css" href="../styles/woocommerce-smallscreen.css" type="text/css" media="only screen and (max-width: 768px)">
+    <link rel="stylesheet" id="woocommerce-general-css" href="../styles/woocommerce.css" type="text/css" media="all">
+    <link rel="stylesheet" id="bootstrap-css" href="../styles/bootstrap.css" type="text/css" media="all">
+    <link rel="stylesheet" id="thebuilt-fonts-css" href="//fonts.googleapis.com/css?family=Montserrat%3A400%2C700%7COpen+Sans%3A300%2C300italic%2C400%2C400italic%2C600%2C600italic&ver=1.0" type="text/css" media="all">
+    <link rel="stylesheet" id="owl-main-css" href="../styles/owl.carousel.css" type="text/css" media="all">
+    <link rel="stylesheet" id="owl-theme-css" href="../styles/owl.theme.css" type="text/css" media="all">
+    <link rel="stylesheet" id="thebuilt-stylesheet-css" href="../styles/style.css" type="text/css" media="all">
+    <link rel="stylesheet" id="thebuilt-responsive-css" href="../styles/responsive.css" type="text/css" media="all">
+    <link rel="stylesheet" id="thebuilt-animations-css" href="../styles/animations.css" type="text/css" media="all">
+    <link rel="stylesheet" id="thebuilt-mega-menu-css" href="../styles/mega-menu.css" type="text/css" media="all">
+    <link rel="stylesheet" id="thebuilt-mega-menu-responsive-css" href="../styles/mega-menu-responsive.css" type="text/css" media="all">
+    <link rel="stylesheet" id="font-awesome-4.5-css" href="../styles/font-awesome.css" type="text/css" media="all">
+    <link rel="stylesheet" id="thebuilt-select2-css" href="../styles/select2.css" type="text/css" media="all">
+    <link rel="stylesheet" id="offcanvasmenu-css" href="../styles/offcanvasmenu.css" type="text/css" media="all">
+    <link rel="stylesheet" id="nanoscroller-css" href="../styles/nanoscroller.css" type="text/css" media="all">
+    <link rel="stylesheet" id="thebuilt-hover-css" href="../styles/hover.css" type="text/css" media="all">
+    <link rel="stylesheet" id="dashicons-css" href="../styles/dashicons.min.css" type="text/css" media="all">
+    <link rel="stylesheet" id="thickbox-css" href="../styles/thickbox.css" type="text/css" media="all">
+    <link rel="stylesheet" id="js_composer_front-css" href="../styles/js_composer.min.css" type="text/css" media="all">
+    <link rel="stylesheet" id="css-skin-css" href="../styles/css-skin.css" type="text/css" media="all">
+    <script type="text/javascript" src="../scripts/jquery.js"></script>
+    <script type="text/javascript" src="../scripts/jquery-migrate.min.js"></script>
+    <script type="text/javascript" src="../scripts/jquery.tosrus.min.all.js"></script>
+    <script type="text/javascript">
+        /* <![CDATA[ */
+        var rlArgs = {
+            "script": "tosrus",
+            "selector": "lightbox",
+            "customEvents": "",
+            "activeGalleries": "1",
+            "effect": "slide",
+            "infinite": "1",
+            "keys": "0",
+            "autoplay": "1",
+            "pauseOnHover": "0",
+            "timeout": "4000",
+            "pagination": "1",
+            "paginationType": "thumbnails"
+        };
+        /* ]]> */
+    </script>
+    <script type="text/javascript" src="../scripts/front.js"></script>
+    <script type="text/javascript" src="../scripts/jquery.themepunch.tools.min.js"></script>
+    <script type="text/javascript" src="../scripts/jquery.themepunch.revolution.min.js"></script>
+    <script type="text/javascript">
+        /* <![CDATA[ */
+        var wc_add_to_cart_params = {
+            "ajax_url": "\/thebuilt\/thebuilt-2\/wp-admin\/admin-ajax.php",
+            "wc_ajax_url": "\/thebuilt\/thebuilt-2\/our-services\/?wc-ajax=%%endpoint%%",
+            "i18n_view_cart": "View Cart",
+            "cart_url": "http:\/\/wp.magnium-themes.com\/thebuilt\/thebuilt-2\/cart\/",
+            "is_cart": "",
+            "cart_redirect_after_add": "no"
+        };
+        /* ]]> */
+    </script>
+    <script type="text/javascript" src="../scripts/add-to-cart.min.js"></script>
+    <script type="text/javascript" src="../scripts/woocommerce-add-to-cart.js"></script>
+    <script type="text/javascript" src="../scripts/js-skin.js"></script>
+    <link rel="https://api.w.org/" href="https://wp.magnium-themes.com/thebuilt/thebuilt-2/wp-json/">
+    <link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://wp.magnium-themes.com/thebuilt/thebuilt-2/xmlrpc.php?rsd">
+    <link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://wp.magnium-themes.com/thebuilt/thebuilt-2/wp-includes/wlwmanifest.xml">
+    <meta name="generator" content="WordPress 4.5.3">
+    <meta name="generator" content="WooCommerce 2.5.5">
+    <link rel="canonical" href="https://wp.magnium-themes.com/thebuilt/thebuilt-2/our-services/">
+    <link rel="shortlink" href="https://wp.magnium-themes.com/thebuilt/thebuilt-2/?p=461">
+    <link rel="alternate" type="application/json+oembed" href="https://wp.magnium-themes.com/thebuilt/thebuilt-2/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwp.magnium-themes.com%2Fthebuilt%2Fthebuilt-2%2Four-services%2F">
+    <link rel="alternate" type="text/xml+oembed" href="https://wp.magnium-themes.com/thebuilt/thebuilt-2/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwp.magnium-themes.com%2Fthebuilt%2Fthebuilt-2%2Four-services%2F&format=xml">
+    <meta name="generator" content="Powered by Visual Composer - drag and drop page builder for WordPress.">
+    <!--[if lte IE 9]><link rel="stylesheet" type="text/css" href="http://wp.magnium-themes.com/thebuilt/thebuilt-2/wp-content/plugins/js_composer/assets/css/vc_lte_ie9.min.css" media="screen"><![endif]-->
+    <!--[if IE  8]><link rel="stylesheet" type="text/css" href="http://wp.magnium-themes.com/thebuilt/thebuilt-2/wp-content/plugins/js_composer/assets/css/vc-ie8.min.css" media="screen"><![endif]-->
+    <meta name="generator" content="Powered by Slider Revolution 5.2.6 - responsive, Mobile-Friendly Slider Plugin for WordPress with comfortable drag and drop interface.">
+    <link rel="icon" href="../images/cropped-favicon-32x32.png" sizes="32x32">
+    <link rel="icon" href="../images/cropped-favicon-192x192.png" sizes="192x192">
+    <link rel="apple-touch-icon-precomposed" href="../images/cropped-favicon-180x180.png">
+    <meta name="msapplication-TileImage" content="http://wp.magnium-themes.com/thebuilt/thebuilt-2/wp-content/uploads/2016/05/cropped-favicon-270x270.png">
+    <style type="text/css" data-type="vc_shortcodes-custom-css">
+        .vc_custom_1459500649448 {
+            margin-bottom: 20px !important;
+        }
+        
+        .vc_custom_1459500687188 {
+            margin-bottom: 50px !important;
+        }
+        
+        .vc_custom_1464356916127 {
+            padding-right: 25px !important;
+            padding-left: 25px !important;
+        }
+        
+        .vc_custom_1459415178192 {
+            padding-top: 25px !important;
+            padding-right: 25px !important;
+            padding-bottom: 25px !important;
+            padding-left: 25px !important;
+            background-color: #f5f5f5 !important;
+        }
+        
+        .vc_custom_1464356926823 {
+            padding-right: 25px !important;
+            padding-left: 25px !important;
+        }
+        
+        .vc_custom_1459415137038 {
+            padding-top: 25px !important;
+            padding-right: 25px !important;
+            padding-bottom: 25px !important;
+            padding-left: 25px !important;
+            background-color: #f5f5f5 !important;
+        }
+        
+        .vc_custom_1464356937060 {
+            padding-right: 25px !important;
+            padding-left: 25px !important;
+        }
+        
+        .vc_custom_1459415187822 {
+            padding-top: 25px !important;
+            padding-right: 25px !important;
+            padding-bottom: 25px !important;
+            padding-left: 25px !important;
+            background-color: #f5f5f5 !important;
+        }
+        
+        .vc_custom_1464356947414 {
+            padding-right: 25px !important;
+            padding-left: 25px !important;
+        }
+        
+        .vc_custom_1459415207847 {
+            padding-top: 25px !important;
+            padding-right: 25px !important;
+            padding-bottom: 25px !important;
+            padding-left: 25px !important;
+            background-color: #f5f5f5 !important;
+        }
+        
+        .vc_custom_1464356956242 {
+            padding-right: 25px !important;
+            padding-left: 25px !important;
+        }
+        
+        .vc_custom_1459415347117 {
+            padding-top: 25px !important;
+            padding-right: 25px !important;
+            padding-bottom: 25px !important;
+            padding-left: 25px !important;
+            background-color: #f5f5f5 !important;
+        }
+        
+        .vc_custom_1464356965448 {
+            padding-right: 25px !important;
+            padding-left: 25px !important;
+        }
+        
+        .vc_custom_1459415359834 {
+            padding-top: 25px !important;
+            padding-right: 25px !important;
+            padding-bottom: 25px !important;
+            padding-left: 25px !important;
+            background-color: #f5f5f5 !important;
+        }
+    </style><noscript><style type="text/css"> .wpb_animate_when_almost_visible { opacity: 1; }</style></noscript></head>
+
+<body class="page page-id-461 page-parent page-template-default wpb-js-composer js-comp-ver-4.12 vc_responsive">
+
+    <header class="sticky-header main-header">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+
+
+
+
+                    <div class="" align="center">
+                        <a class="" href=""><img src="../images/TheBuiltLogoRetina.png" alt="AGL" class="regular-logo"><img src="../images/TheBuiltLogoRetinaLight.png" alt="TheBuilt" class="light-logo"></a>
+                    </div>
+
+                    <div class="header-center" align="center">
+                        <h1 style="padding-top; 14px; font-family: Arial, Helvetica, sans-serif; font-size: 35px;font-weight:bold; color:dark brown; "><span style="font-size: 38px;Color:dark brown; padding-right: 10px; font-weight:bold">AG</span>Alchemy Consultancy Sdn. Bhd.
+                        </h1>
+                        <div id="navbar" class="navbar navbar-default clearfix mgt-mega-menu menu-uppercase">
+                            <div class="navbar-inner">
+
+                                <div class="navbar-toggle" data-toggle="collapse" data-target=".collapse">
+                                    Menu </div>
+
+                                <div class="navbar-collapse collapse">
+                                    <ul id="menu-main-menu-1" class="nav">
+
+
+
+
+                                        <li id="mgt-menu-item-465" class=""><a href="../index.html"><strong>Home</strong></a>
+
+                                        </li>
+
+                                        <li id="mgt-menu-item-1293" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children"><a href="aboutus.html"><strong>About Us</strong></a>
+                                            <ul class="sub-menu  megamenu-column-1 level-0">
+                                                <li id="mgt-menu-item-1303" class="menu-item menu-item-type-custom menu-item-object-custom"><a href="history.html">Company Hitory</a></li>
+                                                <li id="mgt-menu-item-1305" class="menu-item menu-item-type-custom menu-item-object-custom"><a href="career.html">Careers</a></li>
+                                                <li id="mgt-menu-item-1306" class="menu-item menu-item-type-custom menu-item-object-custom"><a href="certificate.html">Certifications</a></li>
+                                                <li id="mgt-menu-item-1295" class="menu-item menu-item-type-custom menu-item-object-custom"><a href="corevalue.html">Core Values</a></li>
+                                                <li id="mgt-menu-item-1298" class="menu-item menu-item-type-custom menu-item-object-custom"><a href="ourteam.html">Our Team</a></li>
+                                                <li id="mgt-menu-item-1299" class="menu-item menu-item-type-custom menu-item-object-custom"><a href="faq.html">Faq</a></li>
+
+
+
+                                            </ul>
+                                        </li>
+
+
+
+
+
+
+
+
+
+
+                                        <li id="mgt-menu-item-463" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-multicolumn"><a href="services.html"><strong>Services</strong></a>
+                                            <ul class="sub-menu  megamenu-column-1 level-0">
+                                                <li id="mgt-menu-item-1303" class="menu-item menu-item-type-custom menu-item-object-custom"><a href="ser-construction.html">Construction Consultant</a></li>
+                                                <li id="mgt-menu-item-1305" class="menu-item menu-item-type-custom menu-item-object-custom"><a href="ser-precons.html">Preconstruction Planning</a></li>
+                                                <li id="mgt-menu-item-1306" class="menu-item menu-item-type-custom menu-item-object-custom"><a href="ser-house.html">House Renovation</a></li>
+                                                <li id="mgt-menu-item-1295" class="menu-item menu-item-type-custom menu-item-object-custom"><a href="ser-interior.html">Interior Design</a></li>
+                                                <li id="mgt-menu-item-1298" class="menu-item menu-item-type-custom menu-item-object-custom"><a href="ser-archi.html">Architecture & Building</a></li>
+                                                <li id="mgt-menu-item-2661" class="menu-item menu-item-type-custom menu-item-object-custom"><a href="ser-build.html">Building Engineering</a></li>
+
+                                                <li id="mgt-menu-item-1299" class="menu-item menu-item-type-custom menu-item-object-custom"><a href="ser-mech.html">Mechanical Engineering</a></li>
+                                                <li id="mgt-menu-item-2659" class="menu-item menu-item-type-custom menu-item-object-custom"><a href="ser-struct.html">Structural Engineering</a></li>
+                                                <li id="mgt-menu-item-2660" class="menu-item menu-item-type-custom menu-item-object-custom"><a href="ser-foren.html">Forensic Engineering</a></li>
+                                            </ul>
+
+
+
+
+                                        </li>
+                                        <li id="mgt-menu-item-914" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children"><a href="projects.html"><strong>Projects</strong></a>
+                                            <ul class="sub-menu  megamenu-column-1 level-0">
+                                                <li id="mgt-menu-item-1086" class="menu-item menu-item-type-custom menu-item-object-custom"><a href="nlfcs.html">NLFCS</a>
+
+                                                </li>
+                                                <li id="mgt-menu-item-1087" class="menu-item menu-item-type-custom menu-item-object-custom"><a href="pro-waste.html"> Waste Water Industry</a>
+                                                </li>
+                                                <li id="mgt-menu-item-1088" class="menu-item menu-item-type-custom menu-item-object-custom"><a href="pro-geo.html"> Geotechnical and Geological</a>
+
+                                                </li>
+                                                <li id="mgt-menu-item-1147" class="menu-item menu-item-type-post_type menu-item-object-page"><a href="pro-struct.html">Structural Integrityl</a>
+
+                                                </li>
+                                                <li id="mgt-menu-item-1189" class="menu-item menu-item-type-post_type menu-item-object-page"><a href="pro-power.html">Power Cable Bridge</a>
+
+                                                </li>
+                                                <li id="mgt-menu-item-1089" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children"><a href="projects.html">Our Recent Projects</a>
+                                                    <ul class="sub-menu  level-1">
+                                                        <li id="mgt-menu-item-1101" class="menu-item menu-item-type-post_type menu-item-object-mgt_portfolio"><a href="pro-greenhouse.html">Green House</a></li>
+                                                        <li id="mgt-menu-item-1098" class="menu-item menu-item-type-post_type menu-item-object-mgt_portfolio"><a href="pro-archi.html">Architecture and Design</a></li>
+                                                        <li id="mgt-menu-item-1099" class="menu-item menu-item-type-post_type menu-item-object-mgt_portfolio"><a href="pro-consult.html">Construction consulting</a></li>
+                                                        <li id="mgt-menu-item-1100" class="menu-item menu-item-type-post_type menu-item-object-mgt_portfolio"><a href="pro-family.html">Family house</a></li>
+                                                        <li id="mgt-menu-item-1102" class="menu-item menu-item-type-post_type menu-item-object-mgt_portfolio"><a href="pro-hotel.html">Hotel</a></li>
+                                                        <li id="mgt-menu-item-1103" class="menu-item menu-item-type-post_type menu-item-object-mgt_portfolio"><a href="pro-florida.html">House in Florida</a></li>
+                                                        <li id="mgt-menu-item-1104" class="menu-item menu-item-type-post_type menu-item-object-mgt_portfolio"><a href="pro-modern.html">Modern House</a></li>
+                                                        <li id="mgt-menu-item-1105" class="menu-item menu-item-type-post_type menu-item-object-mgt_portfolio"><a href="pro-office.html">Office interior</a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li id="mgt-menu-item-1190" class="menu-item menu-item-type-custom menu-item-object-custom"><a href="gallery.html"><strong>Gallery</strong></a>
+
+                                        </li>
+                                        <li id="mgt-menu-item-1338" class=""><a href="contactus.html"><strong>Contact us</strong></a>
+
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="header-right">
+                        <ul class="header-nav">
+                            <li class="search-toggle">
+                                <div style="font-weight:bold;"><img src="../images/TelephoneRingingAnimated1.gif">Phone: +6012-2877792
+                                </div>
+                            </li>
+
+
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+
+    <div class="portfolio-navigation-prev" data-name="Prev">
+        <div class="portfolio-navigation-image">
+            <a href="" rel="prev"><img width="100" height="100" src="../images/photodune-3979163-house-interior-m-100x100.jpg" class="attachment-thebuilt-portfolio-nav size-thebuilt-portfolio-nav wp-post-image" alt="photodune-3979163-house-interior-m"
+                    sizes="(max-width: 100px) 100vw, 100px"></a>
+        </div>
+    </div>
+    <div class="portfolio-navigation-next" data-name="Next">
+        <div class="portfolio-navigation-image">
+            <a href="" rel="next"><img width="100" height="100" src="../images/photodune-1697621-3d-house-isolated-on-white-rendered-generic-m-100x100.jpg" class="attachment-thebuilt-portfolio-nav size-thebuilt-portfolio-nav wp-post-image" alt="photodune-1697621-3d-house-isolated-on-white-rendered-generic-m"
+                   
+                    sizes="(max-width: 100px) 100vw, 100px"></a>
+        </div>
+    </div>
+
+    <div class="content-block">
+        <div class="container-bg with-bgcolor" data-style="background-color: #F4F4F4">
+            <div class="container-bg-overlay">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="page-item-title">
+                                <h1>Architecture and Design</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="breadcrumbs-container-wrapper">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="breadcrumbs" typeof="BreadcrumbList" vocab="http://schema.org/">
+                                <!-- Breadcrumb NavXT 5.4.0 -->
+                                <span property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" title="Go to TheBuilt." href="" class="home"><span property="name">TheBuilt</span></a>
+                                <meta property="position" content="1">
+                                </span> > <span property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" title="Go to Portfolio." href="" class="post post-mgt_portfolio-archive"><span property="name">Portfolio</span></a>
+                                <meta property="position" content="2">
+                                </span> > <span property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" title="Go to the Building Project category archives." href="" class="taxonomy mgt_portfolio_filter"><span property="name">Building</span></a>
+                                <meta property="position" content="3">
+                                </span> > <span property="itemListElement" typeof="ListItem"><span property="name">Architecture and Design</span>
+                                <meta property="position" content="4">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="project-container container portfolio-item-details portfolio-layout-0 portfolio-title-position-default">
+        <div class="row">
+
+            <div class="col-md-7">
+
+                <div class=" portfolio-item-image-container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="portfolio-item-image">
+                                <div class="porftolio-slider enable-slider">
+                                    <ul class="slides">
+                                        <li>
+                                            <a href="../images/photodune-5893828-downtown-dubai-m.jpg" rel="lightbox"><img src="../images/photodune-5893828-downtown-dubai-m.jpg" alt="Architecture and Design"></a>
+                                        </li>
+                                        <li>
+                                            <a href="../images/photodune-11231701-tilers-at-industrial-floor-tiling-renovation-m.jpg" rel="lightbox"><img src="../images/photodune-11231701-tilers-at-industrial-floor-tiling-renovation-m.jpg" alt=""></a>
+                                        </li>
+                                        <li>
+                                            <a href="../images/photodune-4109485-tradesman-painting-a-ceiling-m.jpg" rel="lightbox"><img src="../images/photodune-4109485-tradesman-painting-a-ceiling-m.jpg" alt=""></a>
+                                        </li>
+                                        <li>
+                                            <a href="../images/photodune-4468168-builder-worker-installing-concrete-slab-m.jpg" rel="lightbox"><img src="../images/photodune-4468168-builder-worker-installing-concrete-slab-m.jpg" alt=""></a>
+                                        </li>
+                                        <li>
+                                            <a href="../images/photodune-3980978-worker-with-orbital-sander-at-wall-filling-m.jpg" rel="lightbox"><img src="../images/photodune-3980978-worker-with-orbital-sander-at-wall-filling-m.jpg" alt=""></a>
+                                        </li>
+                                        <li>
+                                            <a href="../images/photodune-3886647-electrician-maching-channel-in-wall-m.jpg" rel="lightbox"><img src="../images/photodune-3886647-electrician-maching-channel-in-wall-m.jpg" alt=""></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="col-md-5">
+
+                <div class="portfolio-item-data clearfix">
+
+                    <div class="project-content">
+                        <h2>DESCRIPTION</h2>
+                        <p>We connect expertise across services, markets, and geographies to deliver transformative outcomes. Worldwide, we design, build, finance, operate and manage projects and programs that unlock opportunities.</p>
+                        <p>At TheBuilt we are committed to green building and sustainability in our offices as well as on our job sites. We believe green buildings are not only good for the environment, they also provide immediate and long-term economic
+                            benefits.
+                        </p>
+                        <div class="clear"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <div class="project-details">
+
+                                <p><span>Client:</span> Awesome Company</p>
+
+                                <p><span>Location:</span> Barcelona, Spain</p>
+
+                                <p><span>Area:</span> 450 m2</p>
+
+                                <p><span>Value:</span> $ 700,000</p>
+
+                                <p><span>Completed date:</span> September 20, 2016</p>
+
+                                <p><span>Architect:</span> Jane Wong</p>
+
+                                <p><span>Category:</span> Building</p>
+
+                            </div>
+
+
+                            <div class="post-social-wrapper"><span><i class="fa fa-share-alt"></i>
+Share:</span>
+                                <div class="post-social">
+                                    <a title="Share this" href="#" class="facebook-share"> <i class="fa fa-facebook"></i></a>
+                                    <a title="Tweet this" href="#" class="twitter-share"> <i class="fa fa-twitter"></i></a>
+                                    <a title="Share with Google Plus" href="#" class="googleplus-share"> <i class="fa fa-google-plus"></i></a>
+                                    <a title="Pin this" href="#" class="pinterest-share"> <i class="fa fa-pinterest"></i></a>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="clear"></div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+
+    <script>
+        (function($) {
+            $(document).ready(function() {
+                $(".porftolio-slider.enable-slider ul.slides").owlCarousel({
+                    items: 1,
+                    itemsDesktop: [1024, 3],
+                    itemsTablet: [770, 2],
+                    itemsMobile: [480, 1],
+                    autoHeight: true,
+                    autoPlay: true,
+                    navigation: true,
+                    navigationText: false,
+                    pagination: false,
+                    afterInit: function(elem) {
+                        $(".porftolio-slider").css("display", "block");
+                    }
+                });
+
+            });
+        })(jQuery);
+    </script>
+
+
+
+    <div class="related-works">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="page-item-title">
+                        <h1>More projects</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portfolio-list portfolio-list-related clearfix portfolio-columns-4" id="portfolio-list">
+            <div class="portfolio-item-block mix building portfolio-item-animation-2" data-item="1" data-name="Modern House">
+                <a href="https://wp.magnium-themes.com/thebuilt/thebuilt-2/project/modern-house/">
+                    <div class="portfolio-item-image" data-style="background-image: url('http://wp.magnium-themes.com/thebuilt/thebuilt-2/wp-content/uploads/2016/03/photodune-3979102-superb-backyard-m-1024x754.jpg')"></div>
+                    <div class="portfolio-item-bg"></div>
+                    <div class="info">
+                        <span class="sub-title">Building</span>
+                        <h4 class="title">Modern House</h4>
+                    </div>
+                </a>
+            </div>
+
+            <div class="portfolio-item-block mix building portfolio-item-animation-2" data-item="2" data-name="House in Florida">
+                <a href="">
+                    <div class="portfolio-item-image" data-style="background-image: url('../images/photodune-1697621-3d-house-isolated-on-white-rendered-generic-m-1024x1024.jpg')"></div>
+                    <div class="portfolio-item-bg"></div>
+                    <div class="info">
+                        <span class="sub-title">Building</span>
+                        <h4 class="title">House in Florida</h4>
+                    </div>
+                </a>
+            </div>
+
+            <div class="portfolio-item-block mix building portfolio-item-animation-2" data-item="3" data-name="Family house">
+                <a href="">
+                    <div class="portfolio-item-image" data-style="background-image: url('http://wp.magnium-themes.com/thebuilt/thebuilt-2/wp-content/uploads/2016/03/photodune-3979163-house-interior-m-1024x673.jpg')"></div>
+                    <div class="portfolio-item-bg"></div>
+                    <div class="info">
+                        <span class="sub-title">Building</span>
+                        <h4 class="title">Family house</h4>
+                    </div>
+                </a>
+            </div>
+
+            <div class="portfolio-item-block mix consulting portfolio-item-animation-2" data-item="1" data-name="Construction consulting">
+                <a href="">
+                    <div class="portfolio-item-image" data-style="background-image: url('http://wp.magnium-themes.com/thebuilt/thebuilt-2/wp-content/uploads/2016/03/photodune-304719-office-building-m-1024x777.jpg')"></div>
+                    <div class="portfolio-item-bg"></div>
+                    <div class="info">
+                        <span class="sub-title">Consulting</span>
+                        <h4 class="title">Construction consulting</h4>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+        <script>
+            (function($) {
+                $(document).ready(function() {
+
+                    $("#portfolio-list").mixItUp({
+                        effects: ["fade", "scale"],
+                        easing: "snap"
+                    });
+
+                });
+            })(jQuery);
+        </script>
+    </div>
+
+
+
+
+
+
+
+    <div class="container-fluid container-fluid-footer">
+        <div class="row">
+            <div class="footer-sidebar-2-wrapper">
+                <div class="footer-sidebar-2 sidebar container footer-container">
+                    <ul id="footer-sidebar-2" class="clearfix">
+                        <li id="text-2" class="widget widget_text">
+                            <h2 class="widgettitle">About company</h2>
+                            <div class="textwidget"><img src="../images/TheBuiltLogoRetinaLight.png" width="196" height="51" alt="TheBuilt"><br><br>
+                                <p align="justify">Our mission to be a preferred partner for Consultancy and Project Management solutions with the intention to spread ideas and connect people providing value added innovative consultancy services. </p>
+                            </div>
+                        </li>
+                        <li id="thebuilt-recent-posts-4" class="widget widget_thebuilt_recent_entries">
+                            <h2 class="widgettitle">Recent Events</h2>
+                            <ul>
+                                <li class="clearfix">
+                                    <div class="widget-post-thumb-wrapper">
+                                        <a href="">
+                                            <img width="270" height="152" src="../images/home_page/consturctionsteelbridge.jpeg" class="attachment-thebuilt-blog-thumb-widget size-thebuilt-blog-thumb-widget wp-post-image" alt="Construction Steel Bridge Project"
+                                                sizes="(max-width: 270px) 100vw, 270px"> </a>
+                                    </div>
+                                    <div class="widget-post-details-wrapper">
+                                        <div class="post-title"><a href="">PROJECT: CONSTRUCTION OF 
+                                          STEEL BRIDGE FOR IWK KUALA 
+                                          SELANGOR</a></div>
+                                        <div class="post-date">June 1, 2022</div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li id="nav_menu-2" class="widget widget_nav_menu">
+                            <h2 class="widgettitle">Information</h2>
+                            <div class="menu-footer-sidebar-menu-container">
+                                <ul id="menu-footer-sidebar-menu" class="menu">
+                                    <li id="menu-item-2429" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2429"><a href="history.html">Our company</a></li>
+                                    <li id="menu-item-2430" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2430"><a href="services.html">Our services</a></li>
+                                    <li id="menu-item-2431" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2431"><a href="career.html">Career</a></li>
+                                    <li id="menu-item-2432" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2432"><a href="certificate.html">Certifications</a></li>
+                                    <li id="menu-item-2433" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2433"><a href="projects.html">Company projects</a></li>
+                                    <li id="menu-item-2435" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2435"><a href="corevalue.html">Core values</a></li>
+                                    <li id="menu-item-2436" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2436"><a href="faq.html">FAQ</a></li>
+                                    <li id="menu-item-2437" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2437"><a href="gallery.html">Gallery</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li id="text-3" class="widget widget_text">
+                            <h2 class="widgettitle">Contact info</h2>
+                            <div class="textwidget">
+                                <p>You can always contact with us via email or phone. Get in touch with contact and get a quote form.</p>
+                                <p><i class="fa fa-map-marker text-color-theme 
+"></i>Lot 7377, Lorong Ciku, Off Jalan Ciku, Sek U9, Desa Subang Permai, 40150 Shah Alam,
+                                    <BR> Selangor Darul Ehsan.</p>
+                                <p><i class="fa fa-phone-square text-color-theme 
+"></i>012- 287 7792
+
+                                </p>
+                                <p><i class="fa fa-envelope-o text-color-theme 
+"></i><a href="" class="__cf_email__" data-cfemail="">veegov@gmail.com
+</a></p>
+                                <p><i class="fa fa-fax text-color-theme 
+"></i> 03-7845 5867</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </DIV>
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 footer-copyright">
+                        Copyright @ 2025. <a href="" target="_blank">Powered by agalchemyconsults.com</a> </div>
+                    <div class="col-md-6 footer-menu">
+                        <div class="menu-footer-menu-container">
+                            <ul id="menu-footer-menu" class="footer-menu">
+                                <li id="menu-item-9" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-9"><a href="">Privacy Policy</a></li>
+                                <li id="menu-item-2428" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2428"><a href="">Terms of use</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a id="top-link" href="#top"><span>Top</span></a>
+        </footer>
+
+    </div>
+    </div>
+    <div class="search-fullscreen-wrapper">
+        <div class="search-fullscreen-form">
+            <div class="search-close-btn"><i class="fa fa-times"></i></div>
+            <form method="get" id="searchform" class="searchform" action="">
+                <input type="search" class="field" name="s" value="" id="s" placeholder="Type keyword(s) here and hit Enter &">
+                <input type="submit" class="submit btn" id="searchsubmit" value="Search">
+            </form>
+        </div>
+    </div>
+    <script data-cfasync="false" src="../scripts/email-decode.min.js"></script>
+    <script type="text/javascript">
+        /* <![CDATA[ */
+        var plugin = {
+            "plugin_url": "http:\/\/wp.magnium-themes.com\/thebuilt\/thebuilt-2\/wp-content\/plugins\/theme-styler-thebuilt\/"
+        };
+        /* ]]> */
+    </script>
+    <script type="text/javascript" src="../scripts/dedalx_ts.js"></script>
+    <script type="text/javascript" src="../scripts/colorpicker.js"></script>
+    <script type="text/javascript" src="../scripts/jquery.form.min.js"></script>
+    <script type="text/javascript">
+        /* <![CDATA[ */
+        var _wpcf7 = {
+            "loaderUrl": "http:\/\/wp.magnium-themes.com\/thebuilt\/thebuilt-2\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif",
+            "recaptchaEmpty": "Please verify that you are not a robot.",
+            "sending": "Sending ...",
+            "cached": "1"
+        };
+        /* ]]> */
+    </script>
+    <script type="text/javascript" src="../scripts/scripts.js"></script>
+    <script type="text/javascript" src="../scripts/jquery.blockUI.min.js"></script>
+    <script type="text/javascript">
+        /* <![CDATA[ */
+        var woocommerce_params = {
+            "ajax_url": "\/thebuilt\/thebuilt-2\/wp-admin\/admin-ajax.php",
+            "wc_ajax_url": "\/thebuilt\/thebuilt-2\/project\/architecture-and-design\/?wc-ajax=%%endpoint%%"
+        };
+        /* ]]> */
+    </script>
+    <script type="text/javascript" src="../scripts/woocommerce.min.js"></script>
+    <script type="text/javascript" src="../scripts/jquery.cookie.min.js"></script>
+    <script type="text/javascript">
+        /* <![CDATA[ */
+        var wc_cart_fragments_params = {
+            "ajax_url": "\/thebuilt\/thebuilt-2\/wp-admin\/admin-ajax.php",
+            "wc_ajax_url": "\/thebuilt\/thebuilt-2\/project\/architecture-and-design\/?wc-ajax=%%endpoint%%",
+            "fragment_name": "wc_fragments"
+        };
+        /* ]]> */
+    </script>
+    <script type="text/javascript" src="../scripts/cart-fragments.min.js"></script>
+    <script type="text/javascript">
+        /* <![CDATA[ */
+        var thickboxL10n = {
+            "next": "Next >",
+            "prev": "< Prev",
+            "image": "Image",
+            "of": "of",
+            "close": "Close",
+            "noiframes": "This feature requires inline frames. You have iframes disabled or your browser does not support them.",
+            "loadingAnimation": "http:\/\/wp.magnium-themes.com\/thebuilt\/thebuilt-2\/wp-includes\/js\/thickbox\/loadingAnimation.gif"
+        };
+        /* ]]> */
+    </script>
+    <script type="text/javascript" src="../scripts/thickbox.js"></script>
+    <script type="text/javascript" src="../scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../scripts/easing.js"></script>
+    <script type="text/javascript" src="../scripts/jquery.parallax.js"></script>
+    <script type="text/javascript" src="../scripts/select2.min.js"></script>
+    <script type="text/javascript" src="../scripts/owl.carousel.min.js"></script>
+    <script type="text/javascript" src="../scripts/jquery.nanoscroller.min.js"></script>
+    <script type="text/javascript" src="../scripts/jquery.mixitup.min.js"></script>
+    <script type="text/javascript" src="../scripts/TweenMax.min.js"></script>
+    <script type="text/javascript" src="../scripts/jquery.superscrollorama.js"></script>
+    <script type="text/javascript" src="../scripts/template.js"></script>
+    <script type="text/javascript" src="../scripts/wp-embed.min.js"></script>
+
+
+</body>
+
+</html>
+<!--
+Performance optimized by W3 Total Cache. Learn more: https://www.w3-edge.com/products/
+
+Page Caching using disk: enhanced 
+
+Served from: wp.magnium-themes.com @ 2019-09-01 13:35:20 by W3 Total Cache
+-->
