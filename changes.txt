@@ -1,0 +1,37 @@
+ABOUT US (5)
+career.html ✅
+certificate.html
+corevalue.html
+oyerteam.html
+faq.html
+
+SERVICES (6)
+nlfcs.html
+pro-waste.html
+pro-geo.html
+pro-power.html
+pro-struct.html
+pro-power.html
+
+RECENT PROJECTS (7)
+pro-greenhouse.html
+pro-archi.html
+pro-consult.html
+pro-family.html
+pro-hotel.html
+pro-florida.html
+pro-modern.htmlpro-office.html
+
+PROJECTS (9)
+ser-construction.html
+ser-precons.html
+ser-house.html
+ser-interior.html
+ser-archi.html
+ser-build.html
+ser-mech.html
+ser-struct.html
+ser-foren.html
+
+
+
