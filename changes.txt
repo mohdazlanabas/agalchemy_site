@@ -2,8 +2,8 @@ ABOUT US (5)
 career.html ✅
 certificate.html ✅
 corevalue.html ✅
-oyerteam.html
-faq.html
+ourteam.html ✅
+faq.html ✅
 
 SERVICES (6)
 nlfcs.html
